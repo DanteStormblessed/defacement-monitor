@@ -28,7 +28,7 @@ jobs:
         env:
           TARGET_MANAGER_URL: ${{ secrets.TARGET_MANAGER_URL }}
           SCANNER_API_KEY: ${{ secrets.SCANNER_API_KEY }}
-          USE_SELENIUM: "1"
+          USE_SELENIUM: "0"
           SCAN_DELAY_SECONDS: "1.0"
         run: |
           python scanner/scanner_bot.py
