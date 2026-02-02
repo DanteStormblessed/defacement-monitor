@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: target-manager
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: target-manager
+  template:
+    metadata:
+      labels:
+        app: target-manager
+    spec:
+      containers:
+        - name: target-manager
+          image: defacementmonitoracr.azurecr.io/target-manager:0.1.1
+          ports:
+            - containerPort: 8000
+          env:
+            # Database (recommended): PostgreSQL (Azure Database for PostgreSQL / self-hosted)
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: target-manager-secrets
+                  key: database_url
+
+            # Option (dev only): SQLite in a volume (uncomment if you really want it)
+            # - name: DATABASE_URL
+            #   value: "sqlite:////data/app.db"
+            # - name: DATA_DIR
+            #   value: "/data"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: target-manager-secrets
+                  key: jwt_secret
+            - name: SCANNER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: target-manager-secrets
+                  key: scanner_api_key
+
+            # Optional: configure admin credentials via env/secret instead of defaults
+            # - name: ADMIN_USERNAME
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: target-manager-secrets
+            #       key: admin_username
+            # - name: ADMIN_PASSWORD
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: target-manager-secrets
+            #       key: admin_password
