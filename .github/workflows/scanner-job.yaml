@@ -2,7 +2,7 @@ name: scanner-job
 
 on:
   schedule:
-    - cron: "*/30 * * * *"  # cada 30 min
+    - cron: "*/5 * * * *"  # cada 30 min
   workflow_dispatch: {}
 
 jobs:
